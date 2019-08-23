@@ -1,0 +1,52 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+	<h1>Todo List</h1>
+	{% if error_message %}
+		<p><strong>{{ error_message }}</strong></p>
+	{% endif %}
+	<form action="{% url 'todo:create' %}" method="post">
+		{% csrf_token %}
+		<div class="form-group">
+			<label for="todo">Todo</label>
+			<div>
+				{{ form.body }}
+			</div>
+		</div>
+
+		<!-- Add Todo Button -->
+		<div class="form-group">
+			<div style="text-align: right;">
+				<button type="submit">
+					Add Todo
+				</button>
+			</div>
+		</div>
+	</form>
+
+	<!-- Current Todos -->
+	<h2>Current Todos</h2>
+	<table>
+		<thead>
+			<th>Todos</th><th>&nbsp;</th>
+		</thead>
+
+		<tbody>
+			{% for post in posts %}
+			<tr>
+				<!-- todo Name -->
+				<td>
+					<div>{{ post.body }}</div>
+				</td>
+				<td>
+					<form action="{% url 'todo:delete' post.id %}" method="post" style="text-align: right;">
+						{% csrf_token %}
+						<button>Delete</button>
+					</form>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+{% endblock %} 
